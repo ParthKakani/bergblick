@@ -11,9 +11,13 @@ properties were logged and evaluated by real detection logic — the same way a 
 system works off a live access log. Turn a security control off and the corresponding
 detector genuinely goes quiet and the attack succeeds.
 
+![Shop](docs/shop.png)
+
 ---
 
 ## What it demonstrates
+
+![SOC Dashboard mid-attack](docs/soc.png)
 
 A full-stack security engineering project in one self-contained app:
 
