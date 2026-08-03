@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audit Log</title>
+</head>
+<body>
+
+<h1>Audit Log</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>Time</th>
+    <th>User</th>
+    <th>Role</th>
+    <th>Action</th>
+    <th>Details</th>
+</tr>
+
+{% for log in logs %}
+<tr>
+    <td>{{ log.time }}</td>
+    <td>{{ log.user }}</td>
+    <td>{{ log.role }}</td>
+    <td>{{ log.action }}</td>
+    <td>{{ log.details }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>

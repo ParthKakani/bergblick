@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Incident Response</title>
+
+<style>
+
+body{
+margin:0;
+background:#0b1618;
+color:white;
+font-family:Segoe UI;
+}
+
+header{
+background:#10221f;
+padding:20px;
+border-bottom:1px solid #22403a;
+}
+
+.header-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.header-row a{
+color:#2dd4bf;
+text-decoration:none;
+margin-left:18px;
+}
+
+.subtitle{
+color:#7ba89d;
+margin-top:6px;
+}
+
+.container{
+width:95%;
+margin:35px auto;
+}
+
+.timeline{
+
+display:grid;
+
+grid-template-columns:repeat(5,1fr);
+
+gap:20px;
+
+margin-top:30px;
+
+}
+
+.step{
+
+background:#10221f;
+
+border:1px solid #22403a;
+
+border-radius:12px;
+
+padding:20px;
+
+text-align:center;
+
+}
+
+.step h2{
+
+margin:0 0 10px;
+
+color:#2dd4bf;
+
+}
+
+.step p{
+
+color:#c8d4d1;
+
+font-size:14px;
+
+line-height:1.6;
+
+}
+
+.arrow{
+
+text-align:center;
+
+font-size:36px;
+
+color:#2dd4bf;
+
+margin:20px 0;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-top:40px;
+
+}
+
+th{
+
+background:#16302b;
+
+padding:14px;
+
+}
+
+td{
+
+padding:14px;
+
+border-top:1px solid #22403a;
+
+}
+
+tr:hover{
+
+background:#16302b;
+
+}
+
+.good{
+
+color:#44dd88;
+
+font-weight:bold;
+
+}
+table{
+
+width:95%;
+
+margin:30px auto;
+
+border-collapse:collapse;
+
+}
+
+/* PASTE HERE */
+
+footer{
+
+margin-top:40px;
+
+padding:20px;
+
+text-align:center;
+
+background:#10221f;
+
+border-top:1px solid #22403a;
+
+color:#7ba89d;
+
+font-size:14px;
+
+}
+
+footer strong{
+
+color:#2dd4bf;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="header-row">
+
+<div>
+
+<h1>Bergblick Incident Response</h1>
+
+<div class="subtitle">
+
+Security Operations Response Workflow
+
+</div>
+
+</div>
+
+<div>
+
+<a href="/soc">SOC</a>
+
+<a href="/risk-register">Risk Register</a>
+
+<a href="/stride">STRIDE</a>
+
+<a href="/architecture">Architecture</a>
+
+<a href="/testing">Testing</a>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="timeline">
+
+<div class="step">
+
+<h2>1</h2>
+
+<h3>Detection</h3>
+
+<p>SOC identifies suspicious activity and creates an alert.</p>
+
+</div>
+
+<div class="step">
+
+<h2>2</h2>
+
+<h3>Investigation</h3>
+
+<p>Security analyst validates alerts and determines severity.</p>
+
+</div>
+
+<div class="step">
+
+<h2>3</h2>
+
+<h3>Containment</h3>
+
+<p>Block malicious sessions, disable compromised accounts and isolate affected services.</p>
+
+</div>
+
+<div class="step">
+
+<h2>4</h2>
+
+<h3>Recovery</h3>
+
+<p>Restore normal operations, verify systems and remove attacker persistence.</p>
+
+</div>
+
+<div class="step">
+
+<h2>5</h2>
+
+<h3>Lessons Learned</h3>
+
+<p>Update controls, improve detection rules and document findings.</p>
+
+</div>
+
+</div>
+
+<table>
+
+<tr>
+
+<th>Incident</th>
+
+<th>Detection Source</th>
+
+<th>Response</th>
+
+<th>Status</th>
+
+</tr>
+
+<tr>
+
+<td>Credential Stuffing</td>
+
+<td>SOC Login Monitoring</td>
+
+<td>Block IP & Reset Passwords</td>
+
+<td class="good">Prepared</td>
+
+</tr>
+
+<tr>
+
+<td>E-Skimming</td>
+
+<td>CSP & Tamper Detection</td>
+
+<td>Remove Script & Notify PCI Team</td>
+
+<td class="good">Prepared</td>
+
+</tr>
+
+<tr>
+
+<td>Card Testing</td>
+
+<td>Velocity Monitoring</td>
+
+<td>Block Cards & Rate Limit</td>
+
+<td class="good">Prepared</td>
+
+</tr>
+
+<tr>
+
+<td>Invoice Fraud</td>
+
+<td>Fraud Detection Engine</td>
+
+<td>Hold Shipment</td>
+
+<td class="good">Prepared</td>
+
+</tr>
+
+<tr>
+
+<td>Admin Compromise</td>
+
+<td>MFA Alerts</td>
+
+<td>Disable Account</td>
+
+<td class="good">Prepared</td>
+
+</tr>
+
+</table>
+
+</div>
+<footer>
+
+<strong>Bergblick Security Assessment Platform</strong>
+
+<br><br>
+
+IT Security Project • Secure Software Engineering • 2026
+
+</footer>
+</body>
+
+</html>

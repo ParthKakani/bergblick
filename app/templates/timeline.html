@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Timeline</title>
+
+    <style>
+        body{
+            font-family:Segoe UI;
+            background:#f4f4f4;
+            margin:40px;
+        }
+
+        h1{
+            color:#003366;
+        }
+
+        .event{
+            background:white;
+            border-left:6px solid #1d70b8;
+            padding:15px;
+            margin-bottom:15px;
+            box-shadow:0 2px 5px rgba(0,0,0,.1);
+        }
+
+        .time{
+            color:#888;
+            font-size:14px;
+        }
+
+        .action{
+            font-weight:bold;
+            font-size:18px;
+        }
+
+        .details{
+            margin-top:8px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<h1>Security Timeline</h1>
+
+{% for log in logs %}
+
+<div class="event">
+
+    <div class="time">
+        {{ log.time }}
+    </div>
+
+    <div class="action">
+        {{ log.action }}
+    </div>
+
+    <div>
+        User:
+        <b>{{ log.user }}</b>
+        ({{ log.role }})
+    </div>
+
+    <div class="details">
+        {{ log.details }}
+    </div>
+
+</div>
+
+{% endfor %}
+
+</body>
+</html>

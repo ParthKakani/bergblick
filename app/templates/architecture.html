@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Security Architecture</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#0b1618;
+    color:white;
+    font-family:Segoe UI;
+}
+
+header{
+    background:#10221f;
+    padding:20px;
+    border-bottom:1px solid #22403a;
+}
+
+.header-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header-row a{
+    color:#2dd4bf;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+.subtitle{
+    color:#7ba89d;
+    margin-top:6px;
+}
+
+.container{
+    width:95%;
+    margin:35px auto;
+}
+
+.section{
+
+    background:#10221f;
+
+    border:1px solid #22403a;
+
+    border-radius:12px;
+
+    margin-bottom:30px;
+
+    overflow:hidden;
+
+}
+
+.section h2{
+
+    margin:0;
+
+    padding:18px;
+
+    background:#16302b;
+
+    color:#2dd4bf;
+
+}
+
+.diagram{
+
+    padding:40px;
+
+    text-align:center;
+
+    line-height:2.1;
+
+    font-size:18px;
+
+    font-family:Consolas, monospace;
+
+    white-space:pre;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+th{
+
+    background:#132925;
+
+    padding:14px;
+
+}
+
+td{
+
+    padding:14px;
+
+    border-top:1px solid #22403a;
+
+}
+
+tr:hover{
+
+    background:#16302b;
+
+}
+
+.good{
+
+    color:#44dd88;
+
+    font-weight:bold;
+
+}
+table{
+
+width:95%;
+
+margin:30px auto;
+
+border-collapse:collapse;
+
+}
+
+/* PASTE HERE */
+
+footer{
+
+margin-top:40px;
+
+padding:20px;
+
+text-align:center;
+
+background:#10221f;
+
+border-top:1px solid #22403a;
+
+color:#7ba89d;
+
+font-size:14px;
+
+}
+
+footer strong{
+
+color:#2dd4bf;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="header-row">
+
+<div>
+
+<h1>Bergblick Security Architecture</h1>
+
+<div class="subtitle">
+
+Secure Design & Defence in Depth
+
+</div>
+
+</div>
+
+<div>
+
+<a href="/soc">SOC</a>
+
+<a href="/risk-register">Risk Register</a>
+
+<a href="/stride">STRIDE</a>
+
+<a href="/incident-response">Incident Response</a>
+
+<a href="/testing">Testing</a>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="section">
+
+<h2>System Architecture</h2>
+
+<div class="diagram">
+
+Internet
+
+↓
+
+Customer Browser
+
+↓
+
+Flask Web Application
+
+↓
+
+Authentication ─ Checkout API ─ Payment Page
+
+↓
+
+Security Controls Layer
+
+↓
+
+SOC Monitoring
+
+↓
+
+Risk Register + STRIDE
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Implemented Security Controls</h2>
+
+<table>
+
+<tr>
+
+<th>Layer</th>
+
+<th>Control</th>
+
+<th>Purpose</th>
+
+<th>Status</th>
+
+</tr>
+
+<tr>
+
+<td>Authentication</td>
+
+<td>Bot Management</td>
+
+<td>Detect Credential Stuffing</td>
+
+<td class="good">Implemented</td>
+
+</tr>
+
+<tr>
+
+<td>Authentication</td>
+
+<td>Multi-Factor Authentication</td>
+
+<td>Protect Admin Accounts</td>
+
+<td class="good">Implemented</td>
+
+</tr>
+
+<tr>
+
+<td>Payment</td>
+
+<td>CSP & SRI</td>
+
+<td>Prevent Magecart / E-Skimming</td>
+
+<td class="good">Implemented</td>
+
+</tr>
+
+<tr>
+
+<td>Payment</td>
+
+<td>Tamper Detection</td>
+
+<td>Detect Script Injection</td>
+
+<td class="good">Implemented</td>
+
+</tr>
+
+<tr>
+
+<td>Infrastructure</td>
+
+<td>Security Monitoring</td>
+
+<td>Real-time SOC Alerts</td>
+
+<td class="good">Implemented</td>
+
+</tr>
+
+<tr>
+
+<td>Governance</td>
+
+<td>PCI DSS Controls</td>
+
+<td>Compliance</td>
+
+<td class="good">Implemented</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+<footer>
+
+<strong>Bergblick Security Assessment Platform</strong>
+
+<br><br>
+
+IT Security Project • Secure Software Engineering • 2026
+
+</footer>
+</body>
+
+</html>

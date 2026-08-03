@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout — Bergblick</title>
+<link rel="stylesheet" href="/static/shop.css">
+<style>
+  .co-grid{display:grid;grid-template-columns:1fr 320px;gap:24px;padding:24px 0 50px;align-items:start}
+  @media(max-width:820px){.co-grid{grid-template-columns:1fr}}
+  .pay-region{position:relative;border:1.5px dashed var(--line);border-radius:11px;padding:16px;background:#fcfbf8;margin-top:4px}
+  .pay-region .tagname{position:absolute;top:-9px;left:14px;background:#fcfbf8;padding:0 7px;font-size:11px;color:var(--stone)}
+  .brandrow{display:flex;gap:6px;margin-bottom:12px}
+  .brandrow .b{font-size:10px;font-weight:700;color:#fff;padding:3px 7px;border-radius:4px}
+  .b.visa{background:#1a1f71}.b.mc{background:#cc4b28}.b.amex{background:#0a7bc2}
+  .row{display:flex;gap:12px}.row+.row{margin-top:12px}
+  .scripts{font-size:12px}
+  .scripts .s{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line)}
+  .scripts .s:first-child{border-top:0}
+  .tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px}
+  .tag.it{background:#12333a;color:#8fd4c2}.tag.mkt{background:#3a2a12;color:#e0b062}
+  .skim-note{background:#f6e7e4;color:var(--alert);font-size:12.5px;padding:9px 11px;border-radius:9px;margin-top:12px;display:none}
+  .skim-note.on{display:block}
+</style>
+</head>
+<body>
+<div class="edu"><div class="wrap">
+  <strong>Live shop</strong><span>checkout — the payment page and its 14 third-party scripts (assumption A4)</span>
+  <span class="r"><a href="/soc" target="_blank">SOC dashboard →</a></span>
+</div></div>
+<header class="shop"><div class="wrap">
+  <a class="logo" href="/"><svg class="mk" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1f5c4d"/>
+    <path d="M7 22L13 11L17 18L20 13L25 22H7Z" fill="#e8efe9"/><circle cx="22" cy="9" r="2.4" fill="#b8862f"/></svg>Bergblick</a>
+  <div class="acct">{% if user %}<b>{{ user }}</b>{% else %}Guest checkout{% endif %}</div>
+</div></header>
+
+<div class="wrap"><div class="co-grid">
+  <div class="panel" style="margin-top:24px">
+    <h1 style="margin:0 0 4px;font-size:22px">Checkout</h1>
+    <p class="note" style="margin-top:0">Secure checkout · card details handled by our payment provider</p>
+
+    <h3 style="font-size:13px;color:var(--pine);text-transform:uppercase;letter-spacing:.7px;margin:18px 0 10px">Payment</h3>
+    <div class="pay-region">
+      <div class="tagname">payment form · 14 third-party scripts on this page</div>
+      <div class="brandrow"><span class="b visa">VISA</span><span class="b mc">MC</span><span class="b amex">AMEX</span></div>
+      <div class="row"><div class="fld" style="flex:1;margin:0"><label>Card number</label>
+        <input id="cc" placeholder="4242 4242 4242 4242" inputmode="numeric"></div></div>
+      <div class="row">
+        <div class="fld" style="flex:1;margin:0"><label>Expiry</label><input id="exp" placeholder="12 / 27"></div>
+        <div class="fld" style="flex:1;margin:0"><label>CVC</label><input id="cvc" placeholder="123"></div>
+      </div>
+      <div class="skim-note" id="skimNote">⚠ A skimmer is active on this page — a real attacker would be reading these fields. Open the SOC to see how it was detected or blocked.</div>
+    </div>
+    <button class="btn wide" id="payBtn" style="margin-top:16px">Pay €429.00</button>
+    <div class="msg" id="payMsg"></div>
+    <p class="note">Demo only — never enter a real card. Test number <span class="kbd">4242 4242 4242 4242</span>.</p>
+  </div>
+
+  <aside class="panel" style="margin-top:24px">
+    <h3 style="margin:0 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--stone)">Scripts on this page</h3>
+    <p class="note" style="margin-top:0">Published through the tag manager. Note who owns each one.</p>
+    <div class="scripts">
+      {% for s in scripts %}
+      <div class="s"><span>{{ s.name }}<br><span style="color:var(--stone);font-size:11px">{{ s.origin }}</span></span>
+        <span class="tag {{ 'it' if s.owner=='IT' else 'mkt' }}">{{ s.owner }}</span></div>
+      {% endfor %}
+    </div>
+    <p class="note">8 of these are administered by marketing, not IT — the governance boundary (A4) that makes R-01 both likely and hard to fix.</p>
+  </aside>
+</div></div>
+<footer>Fictional case study for an academic IT-security assessment</footer>
+
+<script>
+async function refreshSkim(){
+  const st = await fetch("/api/soc/state").then(r=>r.json()).catch(()=>({}));
+  document.getElementById("skimNote").classList.toggle("on", !!st.skimmer_live);
+}
+setInterval(refreshSkim, 1500); refreshSkim();
+
+document.getElementById("payBtn").addEventListener("click", async ()=>{
+  const m = document.getElementById("payMsg");
+  await fetch("/api/checkout", {method:"POST",headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({session:"web-checkout", method:"card"})});
+  m.className="msg ok"; m.textContent="Payment complete ✓ — a real /api/checkout request was just logged to the SOC.";
+});
+</script>
+</body>
+</html>

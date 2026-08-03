@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bergblick — Bergsteigen & Outdoor</title>
+<link rel="stylesheet" href="/static/shop.css">
+</head>
+<body>
+
+<div class="edu"><div class="wrap">
+  <strong>Live shop</strong>
+  <span>a real website — the SOC dashboard watches every request you make here</span>
+  <span class="r">open the <a href="/soc" target="_blank">SOC dashboard →</a></span>
+</div></div>
+
+<header class="shop"><div class="wrap">
+  <a class="logo" href="/">
+    <svg class="mk" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1f5c4d"/>
+      <path d="M7 22L13 11L17 18L20 13L25 22H7Z" fill="#e8efe9"/>
+      <circle cx="22" cy="9" r="2.4" fill="#b8862f"/></svg>
+    Bergblick
+  </a>
+  <nav class="nav"></nav>
+  <div class="acct">
+    {% if user %}Signed in: <b>{{ user }}</b> · <a href="/logout">Logout</a>
+    {% else %}<a href="#login">Sign in</a>{% endif %}
+  </div>
+</div></header>
+
+<div class="wrap">
+  <section class="hero">
+    <h1>Gear for the mountains</h1>
+    <p>Specialist mountaineering and outdoor equipment. Everything you click, log in to, or
+       check out is a real request — watch it appear in the SOC dashboard.</p>
+  </section>
+
+  <section class="grid">
+    {% for p in products %}
+    <a class="card" href="/product/{{ p.id }}">
+      <div class="ph">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none">
+          <path d="M3 20L9 6l3 6 2-4 4 12H3Z" stroke="#1f5c4d" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="in">
+        <div class="cat">{{ p.cat }}</div>
+        <div class="nm">{{ p.name }}</div>
+        <div class="pr">€{{ "{:,.0f}".format(p.price).replace(",",".") }}</div>
+      </div>
+    </a>
+    {% endfor %}
+  </section>
+
+  {% if not user %}
+  <section class="panel" id="login" style="max-width:420px">
+    <h2 style="margin:0 0 4px;font-size:19px">Sign in</h2>
+    <div class="fld"><label>Email</label><input id="email" placeholder="lena@example.de"></div>
+    <div class="fld"><label>Password</label><input id="pw" type="password" placeholder="••••••••"></div>
+    <button class="btn wide" id="loginBtn">Sign in</button>
+    <div class="msg" id="loginMsg"></div>
+  </section>
+  {% endif %}
+</div>
+
+<footer>Fictional case study for an academic IT-security assessment · Bergblick Handel GmbH</footer>
+
+<script>
+const b = document.getElementById("loginBtn");
+if(b){
+  b.addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("pw").value;
+    const m = document.getElementById("loginMsg");
+    const r = await fetch("/api/login", {method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({email, password})}).then(x=>x.json()).catch(()=>({ok:false}));
+    if(r.ok){ m.className="msg ok"; m.textContent="Welcome, "+r.user+" — reloading…";
+      setTimeout(()=>location.reload(), 700); }
+    else { m.className="msg bad"; m.textContent="Login failed. Check the test credentials above."; }
+  });
+}
+</script>
+</body>
+</html>

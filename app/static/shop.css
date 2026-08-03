@@ -1,0 +1,61 @@
+:root{
+  --paper:#f4f1ea; --ink:#1c2b2a; --stone:#5f6f6b; --line:#ddd7ca;
+  --pine:#1f5c4d; --pine-2:#2c7a66; --alpine:#e8efe9; --gold:#b8862f;
+  --alert:#a8322d; --shadow:0 1px 2px rgba(28,43,42,.05),0 6px 22px rgba(28,43,42,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);overflow-x:hidden;
+  font:15px/1.6 "Segoe UI",-apple-system,Roboto,Helvetica,Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px;width:100%}
+
+.edu{background:var(--ink);color:#dbe6e2;font-size:13px}
+.edu .wrap{display:flex;gap:12px;align-items:center;padding:8px 20px;flex-wrap:wrap}
+.edu strong{color:#fff}.edu .r{margin-left:auto;color:#7fa295;font-size:12px}
+.edu a{color:#8fd4c2;border-bottom:1px solid #2c7a66;padding-bottom:1px}
+
+header.shop{background:#fff;border-bottom:1px solid var(--line)}
+header.shop .wrap{display:flex;align-items:center;gap:16px;padding:15px 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.3px}
+.logo .mk{width:30px;height:30px;flex:none}
+.nav{display:flex;gap:20px;margin-left:18px;color:var(--stone);font-size:14px}
+.acct{margin-left:auto;font-size:13px;color:var(--stone)}
+.acct b{color:var(--pine)}
+
+.hero{padding:34px 0 8px}
+.hero h1{font-size:30px;letter-spacing:-.6px;margin:0 0 6px}
+.hero p{color:var(--stone);margin:0;max-width:560px}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:24px 0 50px}
+@media(max-width:760px){.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  box-shadow:var(--shadow);transition:transform .12s,box-shadow .12s;display:block}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(28,43,42,.1)}
+.card .ph{height:140px;background:var(--alpine);display:grid;place-items:center}
+.card .in{padding:14px 16px}
+.card .cat{font-size:11px;color:var(--pine);font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+.card .nm{font-weight:600;margin:4px 0 6px;line-height:1.3}
+.card .pr{font-weight:700;font-size:17px}
+
+.btn{background:var(--pine);color:#fff;border:0;border-radius:10px;padding:12px 18px;
+  font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s}
+.btn:hover{background:var(--pine-2)}
+.btn.wide{width:100%}
+.btn.ghost{background:transparent;color:var(--pine);border:1.5px solid var(--pine)}
+
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+  padding:22px 24px;margin:24px 0}
+.fld{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fld label{font-size:12px;color:var(--stone);font-weight:600}
+.fld input{border:1.5px solid var(--line);border-radius:9px;padding:11px 12px;font-size:15px;
+  font-family:inherit;background:#fff}
+.fld input:focus{outline:none;border-color:var(--pine-2)}
+.note{font-size:12.5px;color:var(--stone);margin-top:8px}
+.kbd{font-family:"Courier New",monospace;background:var(--alpine);padding:1px 6px;border-radius:4px;
+  color:var(--pine);font-size:12.5px}
+.msg{padding:10px 12px;border-radius:9px;font-size:13.5px;margin-top:12px;display:none}
+.msg.ok{background:#e7f2ec;color:var(--pine);display:block}
+.msg.bad{background:#f6e7e4;color:var(--alert);display:block}
+
+footer{border-top:1px solid var(--line);padding:22px;text-align:center;color:var(--stone);font-size:12px}

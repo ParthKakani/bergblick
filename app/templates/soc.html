@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bergblick SOC — Security Operations</title>
+  <style>
+    :root {
+      --bg: #0b1618;
+      --panel: #10221f;
+      --panel2: #16302b;
+      --line: #22403a;
+      --text: #e6f1ee;
+      --muted: #83a49c;
+      --teal: #2dd4bf;
+      --sea: #6fc3b4;
+      --red: #f2555a;
+      --amber: #f2b134;
+      --green: #4ade80;
+      --crit: #ff4d57;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      font: 14px/1.5 "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* Top Navigation */
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 22px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .top .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 12px var(--teal);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      50% { opacity: 0.5; }
+    }
+
+    .top h1 {
+      font-size: 16px;
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .top .sub {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .top .right {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .top a {
+      color: var(--sea);
+      font-size: 13px;
+      text-decoration: none;
+      border-bottom: 1px solid var(--teal);
+      padding-bottom: 1px;
+    }
+
+    .btn {
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12.5px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn:hover {
+      background: #1d3d36;
+    }
+
+    /* Executive KPI Cards */
+    .executive {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin: 18px 22px 0;
+    }
+
+    .exec-card {
+      background: linear-gradient(180deg, #122723, #10211e);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      transition: 0.2s;
+    }
+
+    .exec-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--teal);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .exec-title {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .exec-value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .exec-green { color: var(--green); }
+    .exec-red { color: var(--red); }
+    .exec-amber { color: var(--amber); }
+    .exec-teal { color: var(--teal); }
+
+    /* Layout Structure */
+    .layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr) 340px;
+      gap: 14px;
+      padding: 14px 22px;
+      align-items: start;
+    }
+
+    @media (max-width: 1200px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    h2 {
+      font-size: 11.5px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 10px;
+      font-weight: 700;
+    }
+
+    /* Attack Control Panel */
+    .atk {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .atk button {
+      text-align: left;
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 11px;
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.12s;
+    }
+
+    .atk button:hover {
+      border-color: var(--red);
+    }
+
+    .atk button.safe:hover {
+      border-color: var(--teal);
+    }
+
+    .atk .n {
+      font-size: 12.5px;
+      font-weight: 600;
+      display: block;
+    }
+
+    .atk .r {
+      font-size: 10.5px;
+      color: var(--sea);
+      margin-top: 2px;
+      display: block;
+    }
+
+    .controls {
+      margin-top: 16px;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+
+    .ctl {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 0;
+    }
+
+    .ctl + .ctl {
+      border-top: 1px solid #1a332e;
+    }
+
+    .sw {
+      position: relative;
+      width: 38px;
+      height: 21px;
+      flex: none;
+    }
+
+    .sw input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .sl {
+      position: absolute;
+      inset: 0;
+      background: #2a4a44;
+      border-radius: 21px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .sl:before {
+      content: "";
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      left: 3px;
+      top: 3px;
+      background: #cfe;
+      border-radius: 50%;
+      transition: 0.15s;
+    }
+
+    input:checked + .sl {
+      background: var(--teal);
+    }
+
+    input:checked + .sl:before {
+      transform: translateX(17px);
+      background: #052e2b;
+    }
+
+    .ctl .cid {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--teal);
+      min-width: 34px;
+    }
+
+    .ctl .cn {
+      font-size: 12px;
+    }
+
+    /* Security Health Gauge */
+    .gauge-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 15px;
+    }
+
+    .gauge-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .gauge {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--green) 0deg 330deg,
+        #233b37 330deg 360deg
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.45);
+    }
+
+    .gauge-inner {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .gauge-score {
+      font-size: 46px;
+      font-weight: bold;
+      color: var(--green);
+    }
+
+    .gauge-label {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .gauge-info {
+      margin-top: 20px;
+      display: flex;
+      gap: 30px;
+    }
+
+    .gauge-item {
+      text-align: center;
+    }
+
+    .gauge-item b {
+      display: block;
+      font-size: 22px;
+      margin-top: 6px;
+    }
+
+    /* Stat Strip */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 13px;
+    }
+
+    .stat .v {
+      font-size: 22px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
+    }
+
+    .stat .k {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    .stat.red .v { color: var(--red); }
+    .stat.grn .v { color: var(--green); }
+    .stat.amb .v { color: var(--amber); }
+
+    /* Alert Feed */
+    .feed {
+      max-height: 64vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .al {
+      border-left: 3px solid var(--muted);
+      background: var(--panel2);
+      border-radius: 0 8px 8px 0;
+      padding: 9px 12px;
+      animation: slide 0.25s ease;
+    }
+
+    @keyframes slide {
+      from { opacity: 0; transform: translateX(-6px); }
+      to { opacity: 1; }
+    }
+
+    .al.critical { border-left-color: var(--crit); }
+    .al.high { border-left-color: var(--red); }
+    .al.medium { border-left-color: var(--amber); }
+    .al.info { border-left-color: var(--teal); }
+
+    .al .hd {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .al .ti {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .al.critical .ti { color: var(--crit); }
+    .al.high .ti { color: var(--red); }
+    .al.medium .ti { color: var(--amber); }
+    .al.info .ti { color: var(--sea); }
+
+    .chip {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: #123;
+      color: #8fd4c2;
+    }
+
+    .chip.risk { background: #3a1518; color: #f2a9a0; }
+    .chip.ctrl { background: #123a32; color: #8fd4c2; }
+    .chip.fn { background: #3a1518; color: #ff8a8a; }
+    .chip.fp { background: #3a3212; color: #e0b062; }
+
+    .al .dt {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .al .tm {
+      font-size: 10px;
+      color: #5f7a73;
+      margin-left: auto;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-style: italic;
+      font-size: 13px;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    /* Live Event Log & Metrics */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-bottom: 10px;
+    }
+
+    .m {
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px;
+      text-align: center;
+    }
+
+    .m .v {
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .m .k {
+      font-size: 9.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .m.tp .v { color: var(--green); }
+    .m.fp .v { color: var(--amber); }
+    .m.fn .v { color: var(--red); }
+
+    .pr {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--muted);
+      padding: 3px 0;
+    }
+
+    .pr b {
+      color: var(--text);
+    }
+
+    .log {
+      max-height: 32vh;
+      overflow-y: auto;
+      font-family: "Courier New", monospace;
+      font-size: 11.5px;
+    }
+
+    .lg {
+      display: flex;
+      gap: 8px;
+      padding: 3px 0;
+      color: var(--muted);
+      animation: slide 0.2s ease;
+    }
+
+    .lg .o {
+      min-width: 56px;
+      font-weight: 700;
+    }
+
+    .lg .o.success, .lg .o.ok { color: var(--green); }
+    .lg .o.fail { color: var(--red); }
+    .lg .o.blocked { color: var(--sea); }
+    .lg .o.flagged { color: var(--amber); }
+
+    .lg .k {
+      color: var(--sea);
+      min-width: 62px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #2a4a44;
+      border-radius: 5px;
+    }
+
+    table{
+
+width:95%;
+
+margin:30px auto;
+
+border-collapse:collapse;
+
+}
+
+.time-selector{
+
+display:flex;
+
+justify-content:center;
+
+gap:10px;
+
+margin-bottom:15px;
+
+}
+
+.time-selector button{
+
+background:#16302b;
+
+border:1px solid #22403a;
+
+color:white;
+
+padding:6px 14px;
+
+border-radius:20px;
+
+cursor:pointer;
+
+}
+
+.time-selector .active{
+
+background:#2dd4bf;
+
+color:#081412;
+
+font-weight:bold;
+
+}
+
+.posture-gauge{
+
+position:relative;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+margin-top:10px;
+
+}
+
+.posture-gauge{
+
+    position:relative;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px 0;
+
+}
+
+.posture-gauge svg{
+
+    width:520px;
+
+    max-width:100%;
+
+    height:300px;
+
+}
+
+.score{
+
+position:absolute;
+
+left:50%;
+
+top:56%;
+
+transform:translate(-50%,-50%);
+
+text-align:center;
+
+}
+
+.score div{
+
+font-size:72px;
+
+font-weight:800;
+
+line-height:1;
+
+color:#2dd4bf;
+
+text-shadow:0 0 18px rgba(45,212,191,.35);
+
+}
+
+.score span{
+
+display:block;
+
+margin-top:8px;
+
+font-size:20px;
+
+font-weight:600;
+
+letter-spacing:1px;
+
+color:#d7f7ef;
+
+}
+
+.severity-summary{
+
+display:grid;
+
+grid-template-columns:repeat(5,1fr);
+
+gap:12px;
+
+margin-top:20px;
+
+}
+
+.severity-summary div{
+
+background:#132925;
+
+border:1px solid #22403a;
+
+border-radius:10px;
+
+padding:12px;
+
+text-align:center;
+
+}
+
+.severity-summary b{
+
+display:block;
+
+font-size:30px;
+
+margin-top:6px;
+
+font-weight:bold;
+
+}
+.trend-panel{
+
+margin-top:30px;
+
+padding:18px;
+
+border:1px solid #21433c;
+
+border-radius:12px;
+
+background:#10211d;
+
+}
+
+.trend-header{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-bottom:15px;
+
+font-size:14px;
+
+font-weight:600;
+
+}
+
+#trendDirection{
+
+color:#2dd4bf;
+
+}
+
+#trendChart{
+
+width:100%;
+
+height:170px;
+
+display:block;
+
+}
+.timeline-panel{
+    margin-top:30px;
+    padding:18px;
+    border:1px solid #21433c;
+    border-radius:12px;
+    background:#10211d;
+    height:260px;
+    overflow:hidden;
+}
+
+.timeline-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.timeline-list{
+    height:190px;
+    overflow-y:auto;
+    padding-right:6px;
+}
+
+.timeline-item{
+    display:flex;
+    gap:12px;
+    padding:8px 0;
+    border-bottom:1px solid rgba(255,255,255,.05);
+    font-size:13px;
+}
+
+.timeline-time{
+    width:55px;
+    color:#94a3b8;
+    font-size:12px;
+    flex-shrink:0;
+}
+
+.timeline-text{
+    flex:1;
+}
+.ai-panel{
+
+    margin-top:30px;
+    padding:20px;
+
+    background:#11263d;
+
+    border:1px solid #355d82;
+
+    border-radius:12px;
+
+}
+
+.ai-header{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    margin-bottom:15px;
+
+    color:#38bdf8;
+
+}
+
+#aiRecommendation{
+
+    line-height:1.7;
+
+}
+/* PASTE HERE */
+
+footer{
+
+margin-top:40px;
+
+padding:20px;
+
+text-align:center;
+
+background:#10221f;
+
+border-top:1px solid #22403a;
+
+color:#7ba89d;
+
+font-size:14px;
+
+}
+
+footer strong{
+
+color:#2dd4bf;
+
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="top">
+    <span class="dot"></span>
+    <div>
+      <h1>Bergblick SOC</h1>
+      <div class="sub">live security operations · Bergblick assessment</div>
+    </div>
+    <div class="right">
+      <a href="/" target="_blank">Open Shop</a>
+      <a href="/risk-register">Risk Register</a>
+      <a href="/stride">STRIDE</a>
+      <a href="/architecture">Architecture</a>
+      <a href="/incident-response">Incident Response</a>
+      <a href="/testing">Testing</a>
+      <a href="/reports">Reports</a>
+      <a href="/ai">AI Security</a>
+      <button class="btn" id="resetBtn">Reset</button>
+    </div>
+  </header>
+
+  <!-- Executive KPI Bar -->
+  <section class="executive">
+    <div class="exec-card">
+      <div class="exec-title">Security Score</div>
+      <div class="exec-value exec-green">92%</div>
+    </div>
+    <div class="exec-card">
+      <div class="exec-title">Threat Level</div>
+      <div class="exec-value exec-amber">MEDIUM</div>
+    </div>
+    <div class="exec-card">
+      <div class="exec-title">Active Incidents</div>
+      <div class="exec-value exec-red">3</div>
+    </div>
+    <div class="exec-card">
+      <div class="exec-title">Controls Enabled</div>
+      <div class="exec-value exec-teal">8 / 8</div>
+    </div>
+    <div class="exec-card">
+      <div class="exec-title">Compliance</div>
+      <div class="exec-value exec-green">PCI DSS</div>
+    </div>
+  </section>
+
+  <!-- Main Dashboard Layout -->
+  <main class="layout">
+
+    <!-- LEFT: Control Panel -->
+    <section class="panel">
+      <h2>Launch an attack</h2>
+      <div class="atk" id="attacks">
+        <button data-atk="stuffing"><span class="n">Credential stuffing</span><span class="r">R-02 · 40 breached logins</span></button>
+        <button data-atk="card_dist"><span class="n">Distributed card testing</span><span class="r">R-05 · one attempt per session</span></button>
+        <button data-atk="card_crude"><span class="n">Crude card testing</span><span class="r">R-05 · one session, many tries</span></button>
+        <button data-atk="skimmer"><span class="n">Inject skimmer</span><span class="r">R-01 · payment page</span></button>
+        <button data-atk="skimmer_cond"><span class="n">Conditional skimmer</span><span class="r">R-01 · fires 1 in 200</span></button>
+        <button data-atk="invoice_fraud"><span class="n">Invoice fraud</span><span class="r">R-06 · stolen identity</span></button>
+        <button data-atk="admin_phish"><span class="n">Phished admin login</span><span class="r">R-03 · stolen password</span></button>
+        <button class="safe" data-atk="legit_order"><span class="n">Genuine €1,800 order</span><span class="r">false positive · no attack</span></button>
+      </div>
+
+      <div class="controls">
+        <h2>Controls</h2>
+        <div id="controls"></div>
+      </div>
+    </section>
+
+    <!-- CENTER: Security Health & Alerts -->
+    <section>
+      < class="gauge-panel">
+
+    <h2>Security Posture</h2>
+
+    <div class="time-selector">
+        <button class="active">1m</button>
+        <button>5m</button>
+        <button>15m</button>
+        <button>1h</button>
+    </div>
+
+    <div class="posture-gauge">
+
+        <svg id="gaugeSvg" viewBox="0 0 420 260">
+  <!-- Critical -->
+  <path
+    d="M60 210 A150 150 0 0 1 110 104"
+    fill="none"
+    stroke="#ef4444"
+    stroke-width="18"
+    stroke-linecap="round"
+  />
+
+  <!-- High -->
+  <path
+    d="M110 104 A150 150 0 0 1 165 70"
+    fill="none"
+    stroke="#f97316"
+    stroke-width="18"
+    stroke-linecap="round"
+  />
+
+  <!-- Medium -->
+  <path
+    d="M165 70 A150 150 0 0 1 255 70"
+    fill="none"
+    stroke="#eab308"
+    stroke-width="18"
+    stroke-linecap="round"
+  />
+
+  <!-- Good -->
+  <path
+    d="M255 70 A150 150 0 0 1 310 104"
+    fill="none"
+    stroke="#22c55e"
+    stroke-width="18"
+    stroke-linecap="round"
+  />
+
+  <!-- Excellent -->
+  <path
+    d="M310 104 A150 150 0 0 1 360 210"
+    fill="none"
+    stroke="#14b8a6"
+    stroke-width="18"
+    stroke-linecap="round"
+  />
+
+  <!-- Center Hub Base -->
+  <circle
+    cx="210"
+    cy="210"
+    r="18"
+    fill="#081412"
+  />
+
+  <!-- Needle Group -->
+  <g id="needle" transform="rotate(-90 210 210)">
+    <line
+      x1="210"
+      y1="210"
+      x2="210"
+      y2="60"
+      stroke="#ffffff"
+      stroke-width="6"
+      stroke-linecap="round"
+    />
+    <circle
+      cx="210"
+      cy="210"
+      r="12"
+      fill="#ffffff"
+    />
+  </g>
+</svg>
+
+
+        <div class="score">
+
+            <div id="securityScore">100</div>
+
+            <span id="securityLabel">Excellent</span>
+
+        </div>
+
+    </div>
+
+    <div class="severity-summary">
+      
+
+  
+
+        <div>
+            Critical
+            <b id="critCount">0</b>
+        </div>
+
+        <div>
+            High
+            <b id="highCount">0</b>
+        </div>
+
+        <div>
+            Medium
+            <b id="medCount">0</b>
+        </div>
+
+        <div>
+            Low
+            <b id="lowCount">0</b>
+        </div>
+
+        <div>
+            Info
+            <b id="infoCount">0</b>
+        </div>
+
+    </div>
+<div class="trend-panel">
+
+    <div class="trend-header">
+
+        <span>Security Trend</span>
+
+        <span id="trendDirection">▲ Stable</span>
+
+    </div>
+
+    <canvas id="trendChart"
+            width="900"
+            height="180"></canvas>
+
+</div>
+<div class="timeline-panel">
+
+    <div class="timeline-header">
+
+        <span>Security Timeline</span>
+
+        <span id="timelineCount">0 Events</span>
+
+    </div>
+
+    <div id="timelineList" class="timeline-list">
+
+    </div>
+
+</div>
+<div class="ai-panel">
+
+    <div class="ai-header">
+        🤖 AI Security Recommendation
+    </div>
+
+    <div id="aiRecommendation">
+
+        Analysing current security events...
+
+    </div>
+
+</div>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="panel">
+        <h2>Alerts <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">· detections mapped to your risk register</span></h2>
+        <div class="feed" id="feed">
+          <div class="empty">No alerts yet. Launch an attack from the left, or browse the shop.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Detection Quality & Live Request Log -->
+    <section class="panel">
+      <h2>Detection quality</h2>
+      <div class="metric-grid" id="metrics"></div>
+      <div class="pr"><span>Recall</span><b id="recall">—</b></div>
+      <div class="pr"><span>Precision</span><b id="precision">—</b></div>
+
+      <h2 style="margin-top:16px">Live request log</h2>
+      <p style="font-size:11.5px;color:var(--muted);margin:0 0 8px">Every real request to the shop, newest first.</p>
+      <div class="log" id="log"></div>
+    </section>
+
+  </main>
+
+  <script>
+    const $ = s => document.querySelector(s);
+    let controlState = {};
+
+    async function loadControls(){
+      const rows = {{ controls|tojson }};
+      $("#controls").innerHTML = rows.map(c => `
+        <div class="ctl">
+          <label class="sw"><input type="checkbox" checked data-ctl="${c.id}"><span class="sl"></span></label>
+          <span class="cid">${c.id}</span><span class="cn">${c.name}</span>
+        </div>`).join("");
+      document.querySelectorAll("[data-ctl]").forEach(inp=>{
+        inp.addEventListener("change", async ()=>{
+          await fetch("/api/soc/control/"+inp.dataset.ctl, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({on: inp.checked})
+          });
+        });
+      });
+    }
+
+    document.querySelectorAll("[data-atk]").forEach(b=>{
+      b.addEventListener("click", async ()=>{
+        b.disabled = true;
+        await fetch("/api/soc/attack/"+b.dataset.atk, {method: "POST"});
+        setTimeout(()=>b.disabled = false, 800);
+      });
+    });
+
+    $("#resetBtn").addEventListener("click", async ()=>{
+      await fetch("/api/soc/reset", {method: "POST"});
+      refresh();
+    });
+
+    const sevRank = {critical: 0, high: 1, medium: 2, info: 3};
+    function timeAgo(ts){ 
+      const s = Math.floor(Date.now() / 1000 - ts); 
+      return s < 60 ? s + "s" : Math.floor(s / 60) + "m"; 
+    }
+    let currentAngle = -90;
+    let scoreHistory = [];
+
+function postureAngle(score){
+
+return -90 + score*1.8;
+
+}
+
+function postureLabel(score){
+
+if(score>=81) return "Excellent";
+
+if(score>=61) return "Good";
+
+if(score>=41) return "Medium";
+
+if(score>=21) return "High";
+
+return "Critical";
+
+}
+
+function animateNeedle(target){
+
+const needle = document.getElementById("needle");
+
+if (!needle) return;
+
+const start=currentAngle;
+
+const frames=30;
+
+let frame=0;
+
+const timer=setInterval(()=>{
+
+frame++;
+
+const angle=start+(target-start)*(frame/frames);
+
+needle.setAttribute(
+    "transform",
+    `rotate(${angle} 210 210)`
+);
+
+if(frame>=frames){
+
+clearInterval(timer);
+
+currentAngle=target;
+
+}
+
+},20);
+
+}
+function drawTrend(){
+
+const canvas=document.getElementById("trendChart");
+
+if(!canvas) return;
+
+const ctx=canvas.getContext("2d");
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+if(scoreHistory.length<2) return;
+
+ctx.lineWidth=3;
+
+ctx.strokeStyle="#2dd4bf";
+
+ctx.beginPath();
+
+scoreHistory.forEach((v,i)=>{
+
+const x=i*(canvas.width/(scoreHistory.length-1));
+
+const y=canvas.height-(v/100)*canvas.height;
+
+if(i===0)
+
+ctx.moveTo(x,y);
+
+else
+
+ctx.lineTo(x,y);
+
+});
+
+ctx.stroke();
+
+}
+function renderTimeline(alerts){
+
+    const list=document.getElementById("timelineList");
+    const count=document.getElementById("timelineCount");
+
+    if(!list || !count) return;
+
+    count.textContent=alerts.length+" Events";
+
+    list.innerHTML=alerts.slice(0,15).map(a=>`
+
+        <div class="timeline-item">
+
+            <div class="timeline-time">
+                ${timeAgo(a.ts)}
+            </div>
+
+            <div class="timeline-text">
+
+                <strong>${a.title}</strong><br>
+
+                <span style="color:#94a3b8">
+                    ${a.detail}
+                </span>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+}
+function renderAIRecommendation(alerts){
+
+    let html = `
+        <b>Status:</b> System operating normally.<br><br>
+        AI recommends continuing routine monitoring.
+    `;
+
+    if(alerts.some(a => a.title.toLowerCase().includes("credential"))){
+
+        html = `
+        <b>Threat:</b> Credential Stuffing<br><br>
+
+        <b>AI Recommendation</b>
+
+        <ul>
+            <li>Enable Multi-Factor Authentication (MFA)</li>
+            <li>Temporarily lock suspicious accounts</li>
+            <li>Monitor repeated login attempts</li>
+        </ul>
+        `;
+    }
+
+    else if(alerts.some(a => a.title.toLowerCase().includes("card"))){
+
+        html = `
+        <b>Threat:</b> Card Testing Attack<br><br>
+
+        <b>AI Recommendation</b>
+
+        <ul>
+            <li>Rate-limit payment attempts</li>
+            <li>Block suspicious IP addresses</li>
+            <li>Require additional payment verification</li>
+        </ul>
+        `;
+    }
+
+    else if(alerts.some(a => a.title.toLowerCase().includes("skimmer"))){
+
+        html = `
+        <b>Threat:</b> Payment Skimmer Detected<br><br>
+
+        <b>AI Recommendation</b>
+
+        <ul>
+            <li>Inspect JavaScript resources</li>
+            <li>Enable Content Security Policy (CSP)</li>
+            <li>Restore trusted application files</li>
+        </ul>
+        `;
+    }
+
+    else if(alerts.some(a => a.title.toLowerCase().includes("invoice"))){
+
+        html = `
+        <b>Threat:</b> Invoice Fraud<br><br>
+
+        <b>AI Recommendation</b>
+
+        <ul>
+            <li>Verify customer identity</li>
+            <li>Review unusual payment requests</li>
+            <li>Notify the fraud investigation team</li>
+        </ul>
+        `;
+    }
+
+    else if(alerts.some(a => a.title.toLowerCase().includes("admin"))){
+
+        html = `
+        <b>Threat:</b> Administrative Account Compromise<br><br>
+
+        <b>AI Recommendation</b>
+
+        <ul>
+            <li>Reset administrator credentials</li>
+            <li>Review privileged account activity</li>
+            <li>Enable MFA for all administrator accounts</li>
+        </ul>
+        `;
+    }
+
+    document.getElementById("aiRecommendation").innerHTML = html;
+}
+
+    function renderAlerts(alerts){
+      const f = $("#feed");
+      if(!alerts.length){ 
+        f.innerHTML = '<div class="empty">No alerts yet. Launch an attack from the left, or browse the shop.</div>'; 
+        return; 
+      }
+      f.innerHTML = alerts.map(a=>{
+        const vch = a.verdict === "false_negative" ? '<span class="chip fn">missed</span>' :
+                    a.verdict === "false_positive" ? '<span class="chip fp">false positive</span>' : "";
+        return `<div class="al ${a.severity}">
+          <div class="hd">
+            <span class="ti">${a.title}</span>
+            <span class="chip risk">${a.risk}</span>
+            ${a.control !== "—" ? `<span class="chip ctrl">${a.control}</span>` : ""}
+            ${vch}
+            <span class="tm">${timeAgo(a.ts)} ago</span>
+          </div>
+          <div class="dt">${a.detail}</div></div>`;
+      }).join("");
+    }
+
+    function renderLog(events){
+      $("#log").innerHTML = events.map(e=>`<div class="lg">
+        <span class="o ${e.outcome}">${e.outcome}</span>
+        <span class="k">${e.kind}</span>
+        <span>${e.detail.email || e.detail.path || e.detail.msg || e.detail.session || e.ip}</span></div>`).join("")
+        || '<div class="empty">No requests yet.</div>';
+    }
+
+    function renderStats(s, cards){
+      const cells = [
+        {v: s.events_total || 0, k: "Requests seen", c: ""},
+        {v: s.alerts_total || 0, k: "Alerts raised", c: (s.alerts_total ? "amb" : "")},
+        {v: (cards || 0).toLocaleString(), k: "Cards exposed", c: (cards ? "red" : "grn")},
+        {v: s.missed_total || 0, k: "Missed (FN)", c: (s.missed_total ? "red" : "grn")},
+      ];
+      $("#stats").innerHTML = cells.map(c=>`<div class="stat ${c.c}"><div class="v">${c.v}</div><div class="k">${c.k}</div></div>`).join("");
+    }
+
+    function renderMetrics(m){
+      $("#metrics").innerHTML = `
+        <div class="m tp"><div class="v">${m.true_positive}</div><div class="k">True pos.</div></div>
+        <div class="m fp"><div class="v">${m.false_positive}</div><div class="k">False pos.</div></div>
+        <div class="m fn"><div class="v">${m.false_negative}</div><div class="k">False neg.</div></div>`;
+      $("#recall").textContent = m.recall === null ? "—" : m.recall + "%";
+      $("#precision").textContent = m.precision === null ? "—" : m.precision + "%";
+    }
+
+    async function refresh(){
+      const s = await fetch("/api/soc/state").then(r=>r.json()).catch(()=>null);
+      if(!s) return;
+      console.log(s.controls);
+      const alerts = s.alerts.slice().sort((a,b)=> b.ts - a.ts || sevRank[a.severity] - sevRank[b.severity]);
+      renderAlerts(alerts);
+      renderTimeline(alerts);
+      renderAIRecommendation(alerts);
+      renderLog(s.events);
+      renderStats(s.stats, s.cards_exposed);
+      renderMetrics(s.metrics);
+      let score=100;
+
+const critical=s.alerts.filter(a=>a.severity==="critical").length;
+
+const high=s.alerts.filter(a=>a.severity==="high").length;
+
+const medium=s.alerts.filter(a=>a.severity==="medium").length;
+
+const info=s.alerts.filter(a=>a.severity==="info").length;
+
+const disabled=Object.values(s.controls).filter(v=>!v).length;
+
+score-=critical*15;
+
+score-=high*8;
+
+score-=medium*4;
+
+score-=disabled;
+
+if(score<0) score=0;
+
+const scoreBox = document.getElementById("securityScore");
+
+const oldScore = Number(scoreBox.textContent);
+
+let current = oldScore;
+
+const timer = setInterval(() => {
+
+    if(current === score){
+
+        clearInterval(timer);
+
+        return;
+
+    }
+
+    current += current < score ? 1 : -1;
+
+    scoreBox.textContent = current;
+
+}, 15);
+
+const lbl = document.getElementById("securityLabel");
+
+lbl.textContent = postureLabel(score);
+
+if(score >= 81){
+
+    lbl.style.color = "#14b8a6";
+
+}
+else if(score >= 61){
+
+    lbl.style.color = "#22c55e";
+
+}
+else if(score >= 41){
+
+    lbl.style.color = "#eab308";
+
+}
+else if(score >= 21){
+
+    lbl.style.color = "#f97316";
+
+}
+else{
+
+    lbl.style.color = "#ef4444";
+
+}
+
+document.getElementById("critCount").textContent=critical;
+
+document.getElementById("highCount").textContent=high;
+
+document.getElementById("medCount").textContent=medium;
+
+document.getElementById("lowCount").textContent=Math.max(0,8-high-medium-critical);
+
+document.getElementById("infoCount").textContent=info;
+
+animateNeedle(postureAngle(score));
+
+scoreHistory.push(score);
+
+if(scoreHistory.length>60)
+
+scoreHistory.shift();
+
+drawTrend();
+
+const trend=document.getElementById("trendDirection");
+
+if(scoreHistory.length>1){
+
+const last=scoreHistory.at(-2);
+
+if(score>last){
+
+trend.textContent="▲ Improving";
+
+trend.style.color="#22c55e";
+
+}
+else if(score<last){
+
+trend.textContent="▼ Declining";
+
+trend.style.color="#ef4444";
+
+}
+else{
+
+trend.textContent="► Stable";
+
+trend.style.color="#2dd4bf";
+
+}
+
+}
+    }
+
+    loadControls(); 
+    refresh(); 
+    setInterval(refresh, 1200);
+  </script>
+  <footer>
+
+<strong>Bergblick Security Assessment Platform</strong>
+
+<br><br>
+
+IT Security Project • Secure Software Engineering • 2026
+
+</footer>
+</body>
+</html>

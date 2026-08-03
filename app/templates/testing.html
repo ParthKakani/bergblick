@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Security Testing</title>
+
+<style>
+
+body{
+margin:0;
+background:#0b1618;
+color:white;
+font-family:Segoe UI;
+}
+
+header{
+background:#10221f;
+padding:20px;
+border-bottom:1px solid #22403a;
+}
+
+.header-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.header-row a{
+color:#2dd4bf;
+text-decoration:none;
+margin-left:18px;
+}
+
+.subtitle{
+color:#7ba89d;
+margin-top:6px;
+}
+
+.container{
+width:95%;
+margin:35px auto;
+}
+
+.summary{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:20px;
+
+margin-bottom:30px;
+
+}
+
+.card{
+
+background:#10221f;
+
+border:1px solid #22403a;
+
+border-radius:12px;
+
+padding:20px;
+
+}
+
+.title{
+
+color:#7ba89d;
+
+font-size:12px;
+
+margin-bottom:10px;
+
+}
+
+.value{
+
+font-size:36px;
+
+font-weight:bold;
+
+color:#2dd4bf;
+
+}
+
+.pass{
+
+color:#44dd88;
+
+font-weight:bold;
+
+}
+
+.fail{
+
+color:#ff5555;
+
+font-weight:bold;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+th{
+
+background:#16302b;
+
+padding:14px;
+
+}
+
+td{
+
+padding:14px;
+
+border-top:1px solid #22403a;
+
+}
+
+tr:hover{
+
+background:#16302b;
+
+}
+table{
+
+width:95%;
+
+margin:30px auto;
+
+border-collapse:collapse;
+
+}
+
+/* PASTE HERE */
+
+footer{
+
+margin-top:40px;
+
+padding:20px;
+
+text-align:center;
+
+background:#10221f;
+
+border-top:1px solid #22403a;
+
+color:#7ba89d;
+
+font-size:14px;
+
+}
+
+footer strong{
+
+color:#2dd4bf;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="header-row">
+
+<div>
+
+<h1>Bergblick Security Testing</h1>
+
+<div class="subtitle">
+
+Validation of Security Controls & Attack Simulations
+
+</div>
+
+</div>
+
+<div>
+
+<a href="/soc">SOC</a>
+
+<a href="/risk-register">Risk Register</a>
+
+<a href="/stride">STRIDE</a>
+
+<a href="/architecture">Architecture</a>
+
+<a href="/incident-response">Incident Response</a>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="summary">
+
+<div class="card">
+<div class="title">TEST CASES</div>
+<div class="value">8</div>
+</div>
+
+<div class="card">
+<div class="title">PASSED</div>
+<div class="value pass">8</div>
+</div>
+
+<div class="card">
+<div class="title">FAILED</div>
+<div class="value">0</div>
+</div>
+
+<div class="card">
+<div class="title">SUCCESS RATE</div>
+<div class="value">100%</div>
+</div>
+
+</div>
+
+<table>
+
+<tr>
+<th>Test</th>
+<th>Description</th>
+<th>Expected Result</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>Credential Stuffing</td>
+<td>Bot login attack</td>
+<td>Blocked</td>
+<td class="pass">PASS</td>
+</tr>
+
+<tr>
+<td>Distributed Card Testing</td>
+<td>One card per session</td>
+<td>Detected</td>
+<td class="pass">PASS</td>
+</tr>
+
+<tr>
+<td>Crude Card Testing</td>
+<td>Multiple cards per session</td>
+<td>Detected</td>
+<td class="pass">PASS</td>
+</tr>
+
+<tr>
+<td>E-Skimming</td>
+<td>Payment page injection</td>
+<td>Blocked</td>
+<td class="pass">PASS</td>
+</tr>
+
+<tr>
+<td>Conditional Skimmer</td>
+<td>Rare payload</td>
+<td>Detected</td>
+<td class="pass">PASS</td>
+</tr>
+
+<tr>
+<td>Invoice Fraud</td>
+<td>High-risk checkout</td>
+<td>Flagged</td>
+<td class="pass">PASS</td>
+</tr>
+
+<tr>
+<td>Admin Phishing</td>
+<td>Compromised admin</td>
+<td>MFA enforced</td>
+<td class="pass">PASS</td>
+</tr>
+
+<tr>
+<td>SOC Alert Validation</td>
+<td>Alerts generated</td>
+<td>Displayed</td>
+<td class="pass">PASS</td>
+</tr>
+
+</table>
+
+</div>
+<footer>
+
+<strong>Bergblick Security Assessment Platform</strong>
+
+<br><br>
+
+IT Security Project • Secure Software Engineering • 2026
+
+</footer>
+</body>
+
+</html>

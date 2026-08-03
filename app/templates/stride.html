@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>STRIDE Threat Model</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#0b1618;
+    color:white;
+    font-family:Segoe UI;
+}
+
+header{
+    background:#10221f;
+    padding:20px;
+    border-bottom:1px solid #22403a;
+}
+
+.header-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header-row a{
+    color:#2dd4bf;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+.subtitle{
+    color:#7ba89d;
+    margin-top:6px;
+}
+
+.container{
+    width:95%;
+    margin:30px auto;
+}
+
+.card{
+
+    background:#10221f;
+
+    border:1px solid #22403a;
+
+    border-radius:12px;
+
+    margin-bottom:25px;
+
+    overflow:hidden;
+
+}
+
+.card h2{
+
+    margin:0;
+
+    padding:18px;
+
+    background:#16302b;
+
+    color:#2dd4bf;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+th{
+
+    background:#132925;
+
+    padding:14px;
+
+}
+
+td{
+
+    padding:16px;
+
+    border-top:1px solid #22403a;
+
+}
+
+tr:hover{
+
+    background:#16302b;
+
+}
+
+.high{
+
+    color:#ff5555;
+
+    font-weight:bold;
+
+}
+
+.medium{
+
+    color:#ffbb33;
+
+    font-weight:bold;
+
+}
+
+.low{
+
+    color:#44dd88;
+
+    font-weight:bold;
+
+}
+table{
+
+width:95%;
+
+margin:30px auto;
+
+border-collapse:collapse;
+
+}
+
+/* PASTE HERE */
+
+footer{
+
+margin-top:40px;
+
+padding:20px;
+
+text-align:center;
+
+background:#10221f;
+
+border-top:1px solid #22403a;
+
+color:#7ba89d;
+
+font-size:14px;
+
+}
+
+footer strong{
+
+color:#2dd4bf;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="header-row">
+
+<div>
+
+<h1>Bergblick STRIDE Threat Model</h1>
+
+<div class="subtitle">
+
+Threat Modelling for Bergblick E-Commerce Platform
+
+</div>
+
+</div>
+
+<div>
+
+<a href="/soc">SOC</a>
+
+<a href="/risk-register">Risk Register</a>
+
+<a href="/architecture">Architecture</a>
+
+<a href="/incident-response">Incident Response</a>
+
+<a href="/testing">Testing</a>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>STRIDE Threat Analysis</h2>
+
+<table>
+
+<tr>
+
+<th>Threat</th>
+
+<th>Example in Bergblick</th>
+
+<th>Impact</th>
+
+<th>Mitigation</th>
+
+</tr>
+
+<tr>
+
+<td><b>S — Spoofing</b></td>
+
+<td>Credential Stuffing against customer accounts</td>
+
+<td class="high">High</td>
+
+<td>Bot Management, MFA, Login Monitoring</td>
+
+</tr>
+
+<tr>
+
+<td><b>T — Tampering</b></td>
+
+<td>Payment Page E-Skimmer Injection</td>
+
+<td class="high">Critical</td>
+
+<td>CSP, SRI, Tamper Detection, Governance</td>
+
+</tr>
+
+<tr>
+
+<td><b>R — Repudiation</b></td>
+
+<td>Attacker denies fraudulent checkout</td>
+
+<td class="medium">Medium</td>
+
+<td>Audit Logs & SOC Event Logging</td>
+
+</tr>
+
+<tr>
+
+<td><b>I — Information Disclosure</b></td>
+
+<td>Credit Card Data Theft</td>
+
+<td class="high">Critical</td>
+
+<td>PCI DSS Controls, Encryption, CSP</td>
+
+</tr>
+
+<tr>
+
+<td><b>D — Denial of Service</b></td>
+
+<td>Mass Login Requests</td>
+
+<td class="medium">Medium</td>
+
+<td>Rate Limiting & Bot Detection</td>
+
+</tr>
+
+<tr>
+
+<td><b>E — Elevation of Privilege</b></td>
+
+<td>Compromised Admin Account</td>
+
+<td class="high">High</td>
+
+<td>MFA & Least Privilege</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+<footer>
+
+<strong>Bergblick Security Assessment Platform</strong>
+
+<br><br>
+
+IT Security Project • Secure Software Engineering • 2026
+
+</footer>
+</body>
+
+</html>

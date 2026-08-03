@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Risk Register</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#0b1618;
+    color:white;
+    font-family:Segoe UI;
+}
+
+header{
+
+    padding:20px;
+
+    background:#10221f;
+
+    border-bottom:1px solid #22403a;
+
+}
+
+h1{
+
+    margin:0;
+
+}
+
+/* ===== PASTE THE NEW CSS HERE ===== */
+
+.summary{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:20px;
+
+padding:25px;
+
+}
+
+.card{
+
+background:#10221f;
+
+border:1px solid #22403a;
+
+border-radius:12px;
+
+padding:20px;
+
+}
+
+.title{
+
+color:#7ba89d;
+
+font-size:12px;
+
+letter-spacing:1px;
+
+margin-bottom:10px;
+
+}
+
+.value{
+
+font-size:40px;
+
+font-weight:bold;
+
+color:#2dd4bf;
+
+}
+
+.red{
+
+color:#ff5555;
+
+}
+
+.orange{
+
+color:#ffbb33;
+
+}
+
+.green{
+
+color:#44dd88;
+
+}
+
+/* ===== END OF NEW CSS ===== */
+
+table{
+
+    width:95%;
+
+    margin:30px auto;
+
+    border-collapse:collapse;
+
+}
+
+table{
+
+    width:95%;
+
+    margin:30px auto;
+
+    border-collapse:collapse;
+
+}
+
+th{
+
+    background:#16302b;
+
+    color:#2dd4bf;
+
+    padding:14px;
+
+}
+
+td{
+
+    padding:12px;
+
+    border-bottom:1px solid #22403a;
+
+}
+
+tr:hover{
+
+    background:#16302b;
+
+}
+
+.high{
+
+    color:#ff5555;
+
+    font-weight:bold;
+
+}
+
+.medium{
+
+    color:#ffbb33;
+
+    font-weight:bold;
+
+}
+
+.low{
+
+    color:#44dd88;
+
+    font-weight:bold;
+
+}
+
+table{
+
+width:95%;
+
+margin:30px auto;
+
+border-collapse:collapse;
+
+}
+
+/* PASTE HERE */
+
+footer{
+
+margin-top:40px;
+
+padding:20px;
+
+text-align:center;
+
+background:#10221f;
+
+border-top:1px solid #22403a;
+
+color:#7ba89d;
+
+font-size:14px;
+
+}
+
+footer strong{
+
+color:#2dd4bf;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div style="display:flex;justify-content:space-between;align-items:center;">
+
+<div>
+
+<h1>Bergblick Risk Register</h1>
+
+<div style="color:#7ba89d;margin-top:6px;">
+Governance • Risk • Compliance
+</div>
+
+</div>
+
+<div>
+
+<a href="/soc" style="color:#2dd4bf;text-decoration:none;margin-right:18px;">SOC Dashboard</a>
+
+<a href="/stride" style="color:#2dd4bf;text-decoration:none;margin-right:18px;">STRIDE</a>
+
+<a href="/architecture" style="color:#2dd4bf;text-decoration:none;margin-right:18px;">Architecture</a>
+
+<a href="/incident-response" style="color:#2dd4bf;text-decoration:none;margin-right:18px;">Incident Response</a>
+
+<a href="/testing" style="color:#2dd4bf;text-decoration:none;">Testing</a>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="summary">
+
+<div class="card">
+<div class="title">TOTAL RISKS</div>
+<div class="value">10</div>
+</div>
+
+<div class="card">
+<div class="title">HIGH RISKS</div>
+<div class="value red">3</div>
+</div>
+
+<div class="card">
+<div class="title">MITIGATED</div>
+<div class="value green">8</div>
+</div>
+
+<div class="card">
+<div class="title">OVERALL RISK</div>
+<div class="value orange">MEDIUM</div>
+</div>
+
+</div>
+
+<table>
+
+<tr>
+
+<th>ID</th>
+
+<th>Risk</th>
+
+<th>Likelihood</th>
+
+<th>Impact</th>
+
+<th>Score</th>
+
+<th>Control</th>
+
+<th>Status</th>
+
+</tr>
+
+<tr>
+
+<td>R-01</td>
+
+<td>E-Skimming</td>
+
+<td class="high">High</td>
+
+<td class="high">High</td>
+
+<td>25</td>
+
+<td>C-13</td>
+
+<td>Mitigated</td>
+
+</tr>
+
+<tr>
+
+<td>R-02</td>
+
+<td>Credential Stuffing</td>
+
+<td class="high">High</td>
+
+<td class="medium">Medium</td>
+
+<td>20</td>
+
+<td>C-01 / C-18</td>
+
+<td>Mitigated</td>
+
+</tr>
+
+<tr>
+
+<td>R-03</td>
+
+<td>Admin Account Compromise</td>
+
+<td class="medium">Medium</td>
+
+<td class="high">High</td>
+
+<td>16</td>
+
+<td>C-11</td>
+
+<td>Mitigated</td>
+
+</tr>
+
+<tr>
+
+<td>R-04</td>
+
+<td>SQL Injection</td>
+
+<td class="medium">Medium</td>
+
+<td class="high">High</td>
+
+<td>16</td>
+
+<td>Parameterized Queries</td>
+
+<td>Mitigated</td>
+
+</tr>
+
+<tr>
+
+<td>R-05</td>
+
+<td>Card Testing</td>
+
+<td class="high">High</td>
+
+<td class="medium">Medium</td>
+
+<td>20</td>
+
+<td>C-15</td>
+
+<td>Mitigated</td>
+
+</tr>
+
+<tr>
+
+<td>R-06</td>
+
+<td>Invoice Fraud</td>
+
+<td class="medium">Medium</td>
+
+<td class="medium">Medium</td>
+
+<td>12</td>
+
+<td>C-16</td>
+
+<td>Mitigated</td>
+
+</tr>
+
+</table>
+<footer>
+
+<strong>Bergblick Security Assessment Platform</strong>
+
+<br><br>
+
+IT Security Project • Secure Software Engineering • 2026
+
+</footer>
+</body>
+
+</html>
